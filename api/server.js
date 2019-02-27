@@ -8,7 +8,7 @@ const server = express();
 db = require('../data/dbConfig.js');
 const Users = require('../users/users-module.js');
 
-secret = process.env.JWT_SECRET || 'test secret';
+const secret = process.env.JWT_SECRET || 'test secret';
 
 const errors = {
   '19': 'Username taken, pick a different one.'
@@ -17,6 +17,8 @@ const errors = {
 server.use(helmet());
 server.use(express.json());
 server.use(cors());
+
+const restricted = require('../auth/auth.js');
 
 function generateToken(userData) {
   const payload = {
@@ -86,6 +88,16 @@ server.post('/api/login', async (req, res) => {
   } catch (error) {
     res.status(500).json(error);
   }
-})
+});
+
+// GET route, protected: returns list of users if authorized
+server.get('/api/users', restricted, async (req, res) => {
+  try {
+    const usersData = await Users.getUsers();
+    res.status(200).json(usersData);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
 
 module.exports = server;
