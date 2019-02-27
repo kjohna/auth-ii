@@ -32,10 +32,12 @@ function generateToken(userData) {
   return jwt.sign(payload, secret, options);
 }
 
+// endpoint to check that server works
 server.get('', (req, res) => {
   res.status(200).json({ message: "Server WORKS." });
 });
 
+// endpoint to register a new user
 server.post('/api/register', async (req, res) => {
   const userData = req.body;
   
@@ -57,5 +59,33 @@ server.post('/api/register', async (req, res) => {
     res.status(400).json({ message: "Username, Password, Departments needed, please provide these." });
   }
 });
+
+// endpoint to log in an existing user
+server.post('/api/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const userData = await Users.findUserBy({ username });
+    // console.log(userData);
+    if (userData && bcrypt.compareSync(password, userData.password)) {
+      const token = generateToken({
+        id: userData.id, 
+        username: userData.username, 
+        departments: userData.departments 
+      });
+      // console.log(token);
+      res
+        .status(200)
+        .json({ 
+          message: `Welcome, ${userData.username}!`,
+          token,
+        });
+    } else {
+      res.status(401).json({ message: 'You shall not pass!' });
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+})
 
 module.exports = server;

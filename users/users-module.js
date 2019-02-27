@@ -2,7 +2,7 @@ const db = require('../data/dbConfig.js');
 
 module.exports = {
   addUser,
-  // getRoles,
+  findUserBy,
 }
 
 async function addUser(userData) {
@@ -13,3 +13,14 @@ async function addUser(userData) {
     throw error;
   }
 };
+
+async function findUserBy(filter) {
+  try {
+    const userData = await db('users')
+      .where(filter)
+      .first();
+    return userData;
+  } catch (error) {
+    throw error;
+  }
+}
