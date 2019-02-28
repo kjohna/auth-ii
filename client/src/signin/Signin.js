@@ -28,7 +28,7 @@ class Signin extends React.Component {
     return (
       <>
         <h2>Sign In</h2>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit} autoComplete="off">
           <div>
             <label htmlFor="username" />
             <input 
