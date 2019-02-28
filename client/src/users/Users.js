@@ -1,6 +1,8 @@
 import React from 'react';
 import api from '../api/api';
 
+import requireAuth from '../auth/requireAuth';
+
 class Users extends React.Component {
   state = {
     users: []
@@ -35,4 +37,4 @@ class Users extends React.Component {
   }
 }
 
-export default Users;
+export default requireAuth(Users);
