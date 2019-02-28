@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 
 function restricted(req, res, next) {
   const token = req.headers.authorization;
+  // console.log("token: ", token);
   const secret = process.env.JWT_SECRET || 'test secret';
 
   if (token) {

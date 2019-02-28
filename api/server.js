@@ -94,7 +94,7 @@ server.post('/api/login', async (req, res) => {
 server.get('/api/users', restricted, async (req, res) => {
   try {
     const usersData = await Users.getUsers();
-    res.status(200).json(usersData);
+    res.status(200).json({ users: usersData });
   } catch (error) {
     res.status(500).json(error);
   }
