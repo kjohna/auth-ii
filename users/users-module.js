@@ -3,7 +3,8 @@ const db = require('../data/dbConfig.js');
 module.exports = {
   addUser,
   findUserBy,
-  getUsers
+  getUsers,
+  getUsersBy,
 }
 
 async function addUser(userData) {
@@ -30,6 +31,17 @@ async function getUsers() {
   try {
     const usersData = await db('users');
     return usersData;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getUsersBy(filter) {
+  try {
+    // console.log(filter);
+    userData = await db('users')
+      .where(filter);
+    return userData;
   } catch (error) {
     throw error;
   }

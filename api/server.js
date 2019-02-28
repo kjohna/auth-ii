@@ -93,7 +93,10 @@ server.post('/api/login', async (req, res) => {
 // GET route, protected: returns list of users if authorized
 server.get('/api/users', restricted, async (req, res) => {
   try {
-    const usersData = await Users.getUsers();
+    // console.log(res.decodedJwt);
+    const filter = res.decodedJwt.departments;
+    // console.log({ departments: filter });
+    const usersData = await Users.getUsersBy({ departments: filter });
     res.status(200).json({ users: usersData });
   } catch (error) {
     res.status(500).json(error);
